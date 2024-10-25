@@ -6,7 +6,10 @@ from django.contrib.auth.models import User
 class Post(models.Model):
     """Модель постов для блога"""
 
-    STATUS_OPTIONS = (("published", "Опубликовано"), ("draft", "Черновик"))
+    STATUS_OPTIONS = (
+        ("published", "Опубликовано"),
+        ("draft", "Черновик"),
+    )
 
     title = models.CharField(verbose_name="Название записи", max_length=255)
     slug = models.SlugField(verbose_name="URL", max_length=255, blank=True)
@@ -24,7 +27,7 @@ class Post(models.Model):
         ],
     )
     status = models.CharField(
-        choises=STATUS_OPTIONS,
+        choices=STATUS_OPTIONS,
         default="published",
         verbose_name="Статус записи",
         max_length=10,
@@ -42,7 +45,7 @@ class Post(models.Model):
         to=User,
         verbose_name="Обновил",
         on_delete=models.SET_NULL,
-        null=True,
+        null=True,  # Опиши подробно эту строку
         related_name="updater_posts",
         blank=True,
     )
@@ -51,7 +54,7 @@ class Post(models.Model):
     class Meta:
         db_table = "blog_post"
         ordering = ["-fixed", "-create"]
-        indexex = [models.Index(fields=["-fixed", "-create", "status"])]
+        indexes = [models.Index(fields=["-fixed", "-create", "status"])]
         verbose_name = "Статья"
         verbose_name_plural = "Статьи"
 

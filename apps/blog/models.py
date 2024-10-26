@@ -45,7 +45,7 @@ class Post(models.Model):
         to=User,
         verbose_name="Обновил",
         on_delete=models.SET_NULL,
-        null=True,  # Опиши подробно эту строку
+        null=True,
         related_name="updater_posts",
         blank=True,
     )

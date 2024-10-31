@@ -1,6 +1,6 @@
-{% extends "main.html" %}
+{% extends 'main.html' %}
 
-{% blog content %}
+{% block content %}
     {% for post in posts %}
         <img src={{ post.thumbnail.url }} alt={{ post.title }} width="150"/>
         <strong>{{ post.title }}</strong>

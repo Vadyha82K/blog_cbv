@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 
+from apps.services.utils import unique_slugify
+
 
 class Post(models.Model):
     """Модель постов для блога"""
@@ -74,6 +76,13 @@ class Post(models.Model):
         Получаем прямую ссылку на статью
         """
         return reverse("post_detail", kwargs={"slug": self.slug})
+
+    def save(self, *args, **kwargs):
+        """
+        При сохранении генерируем слаг и проверяем на уникальность
+        """
+        self.slug = unique_slugify(self, self.title, self.slug)
+        super().save(*args, **kwargs)
 
 
 class Category(MPTTModel):

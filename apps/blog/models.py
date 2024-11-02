@@ -12,7 +12,12 @@ class PostManager(models.Manager):
 
     def get_queryset(self):
         """Список постов (SQL запрос с фильтрацией по статусу - опубликовано)"""
-        return super().get_queryset().filter(status="published")
+        return (
+            super()
+            .get_queryset()
+            .select_related("author", "category")
+            .filter(status="published")
+        )
 
 
 class Post(models.Model):

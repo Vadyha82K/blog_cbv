@@ -7,6 +7,14 @@ from mptt.models import MPTTModel, TreeForeignKey
 from apps.services.utils import unique_slugify
 
 
+class PostManager(models.Manager):
+    """Кастомный менеджер для отображения постов"""
+
+    def get_queryset(self):
+        """Список постов (SQL запрос с фильтрацией по статусу - опубликовано)"""
+        return super().get_queryset().filter(status="published")
+
+
 class Post(models.Model):
     """Модель постов для блога"""
 
@@ -60,6 +68,9 @@ class Post(models.Model):
         blank=True,
     )
     fixed = models.BooleanField(verbose_name="Прикреплено", default=False)
+
+    objects = models.Manager()
+    custom = PostManager()
 
     class Meta:
         db_table = "blog_post"
@@ -119,12 +130,11 @@ class Category(MPTTModel):
         verbose_name_plural = "Категории"
         db_table = "app_categories"
 
-
     def get_absolute_url(self):
         """
         Получаем прямую ссылку на категорию
         """
-        return reverse("post_by_category", kwargs={"slug": self.slug})        
+        return reverse("post_by_category", kwargs={"slug": self.slug})
 
     def __str__(self):
         """

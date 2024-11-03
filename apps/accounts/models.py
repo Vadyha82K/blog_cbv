@@ -13,7 +13,7 @@ class Profile(models.Model):
         upload_to="images/avatars/%Y/%m/%d/",
         default="images/avatars/default.png",
         blank=True,
-        validators=[FileExtensionValidator(allowed_extension=("png", "jpg", "jpeg"))],
+        validators=[FileExtensionValidator(allowed_extensions=("png", "jpg", "jpeg"))],
     )
     bio = models.TextField(max_length=500, blank=True, verbose_name="Информация о себе")
     birth_date = models.DateField(null=True, blank=True, verbose_name="Дата рождения")
@@ -23,7 +23,7 @@ class Profile(models.Model):
 
         ordering = ("user",)
         verbose_name = "Профиль"
-        verbose_name_prutal = "Профили"
+        verbose_name_plural = "Профили"
 
     def save(self, *args, **kwargs):
         """Сохранение полей модели при отсутствии их заполнения"""
